@@ -3,3 +3,9 @@ __pycache__/
 checkpoints/
 *.pt
 .ipynb_checkpoints/
+
+# Training and run logs (regenerable, large, noisy diffs)
+*.log
+
+# Local data artifacts (regenerable via prepare_unlabeled.py / pseudo_label.py)
+data/
