@@ -11,7 +11,7 @@ Given a raw job description, the model returns two lists:
 | **Skill** | Any ability or competence — technical or soft. | Python, Docker, Kubernetes, communication, leadership, mentoring, English |
 | **Knowledge** | A body of theoretical or academic understanding. | linear algebra, statistics, consumer psychology, project management methodology |
 
-The two labels follow the ESCO / SkillSpan taxonomy. **Skill** corresponds to ESCO's "Skill" class (renamed from "Tech" in earlier iterations, which had been misleading because the class covers soft skills too).
+The two labels follow theSkillSpan taxonomy. **Skill** corresponds to ESCO's "Skill" class.
 
 ## What was achieved
 
@@ -25,7 +25,6 @@ Starting from a plain cross-entropy baseline at **0.50 macro F1**, four phases o
 | 3. Stronger teacher | Regularised BERT-base retrain | 0.61 |
 | 4. PCA-init embedding | Initialise the student's 30,522 × 128 embedding from PCA-projected BERT word vectors | **0.63** |
 
-A full write-up of each phase — including failed experiments — is in [REPORT.md](REPORT.md) and [SCORES.md](SCORES.md).
 
 ## Project structure
 
@@ -142,6 +141,5 @@ The student is a 5.5M-parameter Transformer encoder: a 30,522 × 128 embedding t
 ## Further reading
 
 - [USAGE.md](USAGE.md) — detailed inference guide with explanation of the taxonomy post-processor
-- [REPORT.md](REPORT.md) — full project report (abstract, methodology, results, lessons)
 - [SCORES.md](SCORES.md) — chronological experiment log with per-class F1 for every run
 - [examples.md](examples.md) — nine worked-example JDs across multiple domains
