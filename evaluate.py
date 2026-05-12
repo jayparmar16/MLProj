@@ -18,7 +18,12 @@ def evaluate_model(model, dataloader, device, criterion=None):
             attention_mask = batch["attention_mask"].to(device)
             labels = batch["labels"].to(device)
 
-            logits = model(input_ids, attention_mask)
+            outputs = model(input_ids, attention_mask)
+            # HF models return an object with a .logits attribute
+            if hasattr(outputs, 'logits'):
+                logits = outputs.logits
+            else:
+                logits = outputs
 
             if criterion is not None:
                 # Reshape for loss calculation
@@ -28,7 +33,11 @@ def evaluate_model(model, dataloader, device, criterion=None):
                 loss = criterion(active_logits, active_labels)
                 total_loss += loss.item()
 
-            preds = torch.argmax(logits, dim=-1)
+            # Use CRF Viterbi decoding if available, otherwise argmax
+            if hasattr(model, 'use_crf') and model.use_crf:
+                preds = model.crf.decode(logits.float(), attention_mask.float())
+            else:
+                preds = torch.argmax(logits, dim=-1)
 
             # Move to CPU for metrics
             preds = preds.cpu().numpy()

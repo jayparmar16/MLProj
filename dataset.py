@@ -5,11 +5,16 @@ from transformers import AutoTokenizer
 
 # The dataset provides 5 distinct tags:
 # O: 0
-# B-Tech: 1
-# I-Tech: 2
+# B-Skill: 1
+# I-Skill: 2
 # B-Knowledge: 3
 # I-Knowledge: 4
-ID_TO_LABEL = {0: "O", 1: "B-Tech", 2: "I-Tech", 3: "B-Knowledge", 4: "I-Knowledge"}
+#
+# Note: "Skill" was originally called "Tech" in this codebase, but that name
+# misled users — SkillSpan's "Skill" class follows ESCO and covers ANY
+# competence (technical or soft), not only technical skills. Renaming to
+# "Skill" matches the source dataset's actual definition.
+ID_TO_LABEL = {0: "O", 1: "B-Skill", 2: "I-Skill", 3: "B-Knowledge", 4: "I-Knowledge"}
 LABEL_TO_ID = {v: k for k, v in ID_TO_LABEL.items()}
 
 class SkillSpanDataset(Dataset):
@@ -27,7 +32,7 @@ class SkillSpanDataset(Dataset):
         # tags_skill contains B/I/O for tech skills
         # tags_knowledge contains B/I/O for knowledge skills
         # We map them to 0-4 labels:
-        # O: 0, B-Tech: 1, I-Tech: 2, B-Knowledge: 3, I-Knowledge: 4
+        # O: 0, B-Skill: 1, I-Skill: 2, B-Knowledge: 3, I-Knowledge: 4
 
         tags_skill = item["tags_skill"]
         tags_knowledge = item["tags_knowledge"]
@@ -35,9 +40,9 @@ class SkillSpanDataset(Dataset):
         labels = []
         for s, k in zip(tags_skill, tags_knowledge):
             # Check for B and I tags, either as strings ("B") or integers if mapping changes
-            if s in ("B", 1, "1", "B-Tech"):
+            if s in ("B", 1, "1", "B-Skill"):
                 labels.append(1)
-            elif s in ("I", 2, "2", "I-Tech"):
+            elif s in ("I", 2, "2", "I-Skill"):
                 labels.append(2)
             elif k in ("B", 1, "1", "B-Knowledge"):
                 labels.append(3)
