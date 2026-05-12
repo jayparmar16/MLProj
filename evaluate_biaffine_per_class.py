@@ -76,7 +76,7 @@ def main(
     print("  Biaffine span head — TEST set, exact-match span metric")
     print("=" * 60)
     print(f"  Overall span F1: {f:.4f} (P {p:.4f} / R {r:.4f})")
-    for cls_id, cls_name in [(1, "Tech"), (2, "Knowledge")]:
+    for cls_id, cls_name in [(1, "Skill"), (2, "Knowledge")]:
         pred_c = [[s for s in spans if s[2] == cls_id] for spans in all_pred]
         gold_c = [[s for s in spans if s[2] == cls_id] for spans in all_gold]
         pc, rc, fc = span_f1(pred_c, gold_c)

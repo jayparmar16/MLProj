@@ -108,7 +108,7 @@ def main(
     print("=" * 60)
 
     # Per-class span F1
-    for cls_id, cls_name in [(1, "Tech"), (2, "Knowledge")]:
+    for cls_id, cls_name in [(1, "Skill"), (2, "Knowledge")]:
         pred_c = [[s for s in spans if s[2] == cls_id] for spans in pred_spans]
         gold_c = [[s for s in spans if s[2] == cls_id] for spans in gold_spans]
         pc, rc, fc = span_f1(pred_c, gold_c)

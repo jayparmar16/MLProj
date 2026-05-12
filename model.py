@@ -106,7 +106,7 @@ class PositionalEncoding(nn.Module):
 
 # ---------------------------------------------------------------------------
 # CRF Layer — learns valid transition constraints between NER labels
-# (e.g., I-Tech can only follow B-Tech or I-Tech, never B-Knowledge)
+# (e.g., I-Skill can only follow B-Skill or I-Skill, never B-Knowledge)
 # ---------------------------------------------------------------------------
 class CRF(nn.Module):
     """Linear-chain Conditional Random Field for sequence labeling."""
@@ -359,8 +359,8 @@ class SpanSkillExtractor(nn.Module):
 def bio_to_span_labels(bio_labels, max_span_len=20):
     """Convert (B, L) BIO labels to (B, L, L) span class labels.
 
-    BIO ids: 0=O, 1=B-Tech, 2=I-Tech, 3=B-Knowledge, 4=I-Knowledge, -100=ignore.
-    Span ids: 0=None, 1=Tech, 2=Knowledge, -100=invalid (i>j, span too long, or padding).
+    BIO ids: 0=O, 1=B-Skill, 2=I-Skill, 3=B-Knowledge, 4=I-Knowledge, -100=ignore.
+    Span ids: 0=None, 1=Skill, 2=Knowledge, -100=invalid (i>j, span too long, or padding).
     """
     B, L = bio_labels.shape
     device = bio_labels.device
@@ -386,7 +386,7 @@ def bio_to_span_labels(bio_labels, max_span_len=20):
         i = 0
         while i < L:
             tag = int(bio_labels[b, i])
-            if tag in (1, 3):  # B-Tech or B-Knowledge
+            if tag in (1, 3):  # B-Skill or B-Knowledge
                 cls = 1 if tag == 1 else 2
                 inside = tag + 1
                 end = i
